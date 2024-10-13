@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "556347781394",
+    "project_id": "bus-seat-reservation-49ef6",
+    "storage_bucket": "bus-seat-reservation-49ef6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:556347781394:android:823dfde99ae384d4fd03cb",
+        "android_client_info": {
+          "package_name": "com.example.bus_seat_booking_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "556347781394-fr0er2an60qfutcjmejo2a9rv7nrkfhl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWx5BIfGW24Kie2P1kYNllcSaY8Kog8GA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "556347781394-fr0er2an60qfutcjmejo2a9rv7nrkfhl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "556347781394-3k718v03b80mbl6ik87cqgqj7g8oq5gb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.busSeatBookingAdmin"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:556347781394:android:399cc1109dd178c1fd03cb",
+        "android_client_info": {
+          "package_name": "com.example.bus_seat_booking_user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "556347781394-fr0er2an60qfutcjmejo2a9rv7nrkfhl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWx5BIfGW24Kie2P1kYNllcSaY8Kog8GA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "556347781394-fr0er2an60qfutcjmejo2a9rv7nrkfhl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "556347781394-3k718v03b80mbl6ik87cqgqj7g8oq5gb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.busSeatBookingAdmin"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
