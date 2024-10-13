@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -49,21 +50,21 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBWx5BIfGW24Kie2P1kYNllcSaY8Kog8GA',
-    appId: '1:556347781394:android:399cc1109dd178c1fd03cb',
-    messagingSenderId: '556347781394',
-    projectId: 'bus-seat-reservation-49ef6',
-    storageBucket: 'bus-seat-reservation-49ef6.appspot.com',
+  static FirebaseOptions android = FirebaseOptions(
+    apiKey: '${dotenv.env['A_API_KEY']}',
+    appId: '${dotenv.env['A_APP_ID']}',
+    messagingSenderId: '${dotenv.env['A_MESSAGING_SENDER_ID']}',
+    projectId: '${dotenv.env['A_PROJECT_ID']}',
+    storageBucket: '${dotenv.env['A_STORAGE_BUCKET']}',
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDqAjJmGiAAjno4oJZWkPtZD_i-ZA8RtIU',
-    appId: '1:556347781394:ios:6df988abc3e09cabfd03cb',
-    messagingSenderId: '556347781394',
-    projectId: 'bus-seat-reservation-49ef6',
-    storageBucket: 'bus-seat-reservation-49ef6.appspot.com',
-    iosClientId: '556347781394-qbra51lavqc9r7oi1fonl2mouvsrn4bk.apps.googleusercontent.com',
-    iosBundleId: 'com.example.busSeatBookingUser',
+  static FirebaseOptions ios = FirebaseOptions(
+    apiKey: '${dotenv.env['I_API_KEY']}',
+    appId: '${dotenv.env['I_APP_ID']}',
+    messagingSenderId: '${dotenv.env['I_MESSAGING_SENDER_ID']}',
+    projectId: '${dotenv.env['I_PROJECT_ID']}',
+    storageBucket: '${dotenv.env['I_STORAGE_BUCKET']}',
+    iosClientId: '${dotenv.env['I_IOS_CLIENT_ID']}',
+    iosBundleId: '${dotenv.env['I_IOS_BUNDLE_ID']}',
   );
 }
