@@ -1,6 +1,3 @@
-Here’s a README template for your Bus Seat Booking App similar to the format you provided:
-
----
 
 ## Project Overview
 This project is a Bus Seat Booking App built with Flutter, allowing users to browse available buses, select seats, and book their tickets in a seamless and user-friendly interface. It includes anonymous login for quick access and a structured booking workflow with profile management options.
