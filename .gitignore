@@ -44,3 +44,5 @@ app.*.map.json
 
 # Secret
 .env
+firebase.json
+app/google-services.json

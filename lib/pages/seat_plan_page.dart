@@ -1,11 +1,14 @@
 import 'package:bus_seat_booking_user/models/schedule_model.dart';
 import 'package:bus_seat_booking_user/pages/confirm_booking_page.dart';
+import 'package:bus_seat_booking_user/pages/login_page.dart';
+import 'package:bus_seat_booking_user/pages/registration_page.dart';
 import 'package:bus_seat_booking_user/providers/seat_plan_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../custom_widgets/small_box.dart';
 import '../custom_widgets/seat_view.dart';
 import '../models/date_model.dart';
+import '../providers/firebase_auth_provider.dart';
 
 class SeatPlanPage extends StatefulWidget {
   static const String routeName = '/seat_plan';
@@ -19,15 +22,19 @@ class SeatPlanPage extends StatefulWidget {
 class _SeatPlanPageState extends State<SeatPlanPage> {
   late ScheduleModel _scheduleModel;
   late DateModel _dateModel;
+  bool isFirst = true;
 
   @override
   void didChangeDependencies() {
-    final argList = ModalRoute.of(context)!.settings.arguments as List;
-    _scheduleModel = argList[0];
-    _dateModel = argList[1];
-    context
-        .read<SeatPlanProvider>()
-        .init(_scheduleModel, _dateModel);
+    if(isFirst){
+      final argList = ModalRoute.of(context)!.settings.arguments as List;
+      _scheduleModel = argList[0];
+      _dateModel = argList[1];
+      context
+          .read<SeatPlanProvider>()
+          .init(_scheduleModel, _dateModel);
+      isFirst = false;
+    }
     super.didChangeDependencies();
   }
 
@@ -69,7 +76,7 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
               child: Consumer<SeatPlanProvider>(
                 builder: (context, provider, child) => GridView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: provider.crossAxisCount.toInt(),
                     crossAxisSpacing: 6,
                     mainAxisSpacing: 10,
@@ -83,7 +90,7 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
                             label: number,
                             isSelected:
                                 provider.selectedSeatNumber.contains(number),
-                            isBooked: false,
+                            isBooked: provider.bookedSeatNumbers.contains(number),
                             onSelect: (value) {
                               provider.selectSeat(value);
                             },
@@ -99,19 +106,25 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
               padding: const EdgeInsets.only(top: 30.0, right: 40.0,),
               child: Align(
                 alignment: Alignment.centerRight,
-                child: ElevatedButton(
-                  onPressed: (){
-                    Navigator.pushNamed(context, ConfirmBookingPage.routeName);
-                  },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                      Theme.of(context).colorScheme.primaryContainer,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      )),
-                  child: const Text(
-                    'NEXT',
-                    style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+                child: Consumer<SeatPlanProvider>(
+                  builder: (context, provider, child) => ElevatedButton(
+                    onPressed: !provider.isAnySeatSelected ? null : (){
+                      if(context.read<FirebaseAuthProvider>().isUserAnonymous){
+                        Navigator.pushNamed(context, LoginPage.routeName);
+                      }else{
+                        Navigator.pushNamed(context, ConfirmBookingPage.routeName);
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                        Theme.of(context).colorScheme.primaryContainer,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        )),
+                    child: const Text(
+                      'NEXT',
+                      style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+                    ),
                   ),
                 ),
               ),

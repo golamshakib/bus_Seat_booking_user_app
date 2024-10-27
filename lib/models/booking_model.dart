@@ -7,8 +7,8 @@ class BookingModel {
   UserModel userModel;
   ScheduleModel scheduleModel;
   DateModel dateModel;
-  num totalSeat;
-  List<String> seatNumbers;
+  num totalSelectedSeat;
+  List<String> selectedSeatNumbers;
   num totalPrice;
   bool isActive;
 
@@ -17,10 +17,10 @@ class BookingModel {
     required this.userModel,
     required this.scheduleModel,
     required this.dateModel,
-    required this.totalSeat,
-    required this.seatNumbers,
+    required this.totalSelectedSeat,
+    required this.selectedSeatNumbers,
     required this.totalPrice,
-    required this.isActive,
+    this.isActive = true,
   });
 
   // Method to convert ReservationModel to a Map
@@ -30,8 +30,8 @@ class BookingModel {
       'userModel': userModel.toMap(),
       'scheduleModel': scheduleModel.toMap(),
       'dateModel': dateModel.toMap(),
-      'totalSeat': totalSeat,
-      'seatNumbers': seatNumbers,
+      'totalSelectedSeat': totalSelectedSeat,
+      'selectedSeatNumbers': selectedSeatNumbers,
       'totalPrice': totalPrice,
       'isActive': isActive,
     };
@@ -44,8 +44,8 @@ class BookingModel {
       userModel: UserModel.fromMap(map['userModel']),
       scheduleModel: ScheduleModel.fromMap(map['scheduleModel']),
       dateModel: DateModel.fromMap(map['dateModel']),
-      totalSeat: map['totalSeat'],
-      seatNumbers: List<String>.from(map['seatNumbers']),
+      totalSelectedSeat: map['totalSelectedSeat'],
+      selectedSeatNumbers: List<String>.from(map['selectedSeatNumbers']),
       totalPrice: map['totalPrice'],
       isActive: map['isActive'],
     );

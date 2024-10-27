@@ -1,3 +1,5 @@
+import 'package:bus_seat_booking_user/db/db_helper.dart';
+import 'package:bus_seat_booking_user/models/booking_model.dart';
 import 'package:bus_seat_booking_user/models/date_model.dart';
 import 'package:bus_seat_booking_user/models/schedule_model.dart';
 import 'package:bus_seat_booking_user/utils/constants.dart';
@@ -5,13 +7,21 @@ import 'package:flutter/foundation.dart';
 
 class SeatPlanProvider with ChangeNotifier{
 
-  final List<String> _seatList = [];
-  final List<String> _selectedSeatNumber = [];
+  List<BookingModel> _bookingSeatList = [];
 
+  final List<String> _bookedSeatNumbers = [];
+  List<String> get bookedSeatNumbers => _bookedSeatNumbers;
+
+  final List<String> _seatList = [];
   List<String> get seatList => _seatList;
+
+  final List<String> _selectedSeatNumber = [];
   List<String> get selectedSeatNumber => _selectedSeatNumber;
 
   String get getAllSelectedSeat => selectedSeatNumber.join(', ');
+  bool get isAnySeatSelected => _selectedSeatNumber.isNotEmpty;
+  int get totalSelectedSeats => _selectedSeatNumber.length;
+  num get totalPrice => scheduleModel.ticketPrice * totalSelectedSeats;
 
   late ScheduleModel scheduleModel;
   late DateModel dateModel;
@@ -19,15 +29,12 @@ class SeatPlanProvider with ChangeNotifier{
   num _crossAxisCount = 0;
   num _mainAxisCount = 0;
   num _passageIndex = 0;
-
-  num get totalSeat => _totalSeat;
   num get crossAxisCount => _crossAxisCount;
-  num get mainAxisCount => _mainAxisCount;
-  num get passageIndex => _passageIndex;
 
   init(ScheduleModel schedule, DateModel date){
     _seatList.clear();
     _selectedSeatNumber.clear();
+    _bookedSeatNumbers.clear();
     scheduleModel = schedule;
     dateModel = date;
     _totalSeat = schedule.bus.totalSeat;
@@ -47,6 +54,7 @@ class SeatPlanProvider with ChangeNotifier{
         _seatList.add(value);
       }
     }
+    _getAllSelectedSeatBookingsByDateAndSchedule(schedule, date);
   }
 
   selectSeat(String label){
@@ -57,5 +65,20 @@ class SeatPlanProvider with ChangeNotifier{
     _selectedSeatNumber.remove(label);
     notifyListeners();
   }
+  unSelectBookedSeat(List<String> bookedSets){
+    _selectedSeatNumber.removeWhere((number) => bookedSets.contains(number));
+    notifyListeners();
+  }
+  _getAllSelectedSeatBookingsByDateAndSchedule(ScheduleModel schedule, DateModel date){
+    DbHelper.getAllSelectedSeatBookingsStreamByDateAndSchedule(schedule, date).listen((snapshot){
+      _bookingSeatList = List.generate(snapshot.docs.length, (index) =>
+          BookingModel.fromMap(snapshot.docs[index].data()));
+      for(final booking in _bookingSeatList){
+        _bookedSeatNumbers.addAll(booking.selectedSeatNumbers);
+      }
+      notifyListeners();
+    });
+  }
+
 
 }

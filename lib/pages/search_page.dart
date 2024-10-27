@@ -1,8 +1,14 @@
+import 'package:bus_seat_booking_user/custom_widgets/app_drawer.dart';
 import 'package:bus_seat_booking_user/models/date_model.dart';
+import 'package:bus_seat_booking_user/pages/login_page.dart';
 import 'package:bus_seat_booking_user/pages/schedule_page.dart';
+import 'package:bus_seat_booking_user/providers/firebase_auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../utils/constants.dart';
+import '../utils/widget_functions.dart';
 
 class SearchPage extends StatefulWidget {
   static const String routeName = '/search';
@@ -16,19 +22,34 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final _formKey = GlobalKey<FormState>();
   final _datePickerController = TextEditingController();
-  String? _startLocation;
-  String? _endLocation;
-  DateTime? _selectedDate;
+  String? _startLocation = 'Dhaka';
+  String? _endLocation = 'Chittagong';
+  DateTime? _selectedDate = DateTime.now();
+
+  @override
+  void initState() {
+    _datePickerController.text = 'October 24, 2024';
+    super.initState();
+  }
+  @override
+  void didChangeDependencies() {
+    if(!context.read<FirebaseAuthProvider>().isUserAnonymous)
+    context.read<FirebaseAuthProvider>().getUserInfo();
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: context.read<FirebaseAuthProvider>().currentUser!.isAnonymous ? null :
+      const AppDrawer(),
       appBar: AppBar(
         title: const Text('Search'),
       ),
       body: Form(
         key: _formKey,
-        child: ListView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
               padding:
@@ -138,14 +159,9 @@ class _SearchPageState extends State<SearchPage> {
         day: _selectedDate!.day,
         timestamp: _selectedDate!.millisecondsSinceEpoch,
       );
-      Navigator.pushNamed(context, SchedulePage.routeName, arguments: [_startLocation, _endLocation, dateModel]);
+      Navigator.pushNamed(context, SchedulePage.routeName,
+          arguments: [_startLocation, _endLocation, dateModel]);
     }
-  }
-
-  @override
-  void dispose() {
-    _datePickerController.dispose();
-    super.dispose();
   }
 
   void _datePicker() async {
@@ -160,5 +176,11 @@ class _SearchPageState extends State<SearchPage> {
         _datePickerController.text = DateFormat.yMMMMd().format(_selectedDate!);
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _datePickerController.dispose();
+    super.dispose();
   }
 }

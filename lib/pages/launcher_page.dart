@@ -1,12 +1,15 @@
-import 'package:bus_seat_booking_user/main.dart';
+import 'package:bus_seat_booking_user/pages/confirm_booking_page.dart';
 import 'package:bus_seat_booking_user/pages/search_page.dart';
 import 'package:bus_seat_booking_user/providers/firebase_auth_provider.dart';
+import 'package:bus_seat_booking_user/providers/seat_plan_provider.dart';
 import 'package:bus_seat_booking_user/utils/widget_functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class LauncherPage extends StatefulWidget {
   static const String routeName = '/';
+
   const LauncherPage({super.key});
 
   @override
@@ -14,16 +17,23 @@ class LauncherPage extends StatefulWidget {
 }
 
 class _LauncherPageState extends State<LauncherPage> {
-
   @override
   void didChangeDependencies() {
-    context.read<FirebaseAuthProvider>().anonymousUserLogin().then((_){
-      Navigator.pushNamed(context, SearchPage.routeName);
-    }).catchError((error){
-      showMsg(context, 'Something went wrong', false);
-    });
+    if (context.read<FirebaseAuthProvider>().currentUser != null &&
+        !context.read<FirebaseAuthProvider>().isUserAnonymous) {
+      Future.delayed(const Duration(seconds: 1),() {
+        Navigator.pushReplacementNamed(context, SearchPage.routeName);
+      });
+    } else {
+      context.read<FirebaseAuthProvider>().anonymousUserLogin().then((_) {
+        Navigator.pushReplacementNamed(context, SearchPage.routeName);
+      }).catchError((error) {
+        showMsg(context, error, false);
+      });
+    }
     super.didChangeDependencies();
   }
+
   @override
   Widget build(BuildContext context) {
     return const Scaffold(

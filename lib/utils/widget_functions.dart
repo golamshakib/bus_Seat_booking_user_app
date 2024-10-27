@@ -9,6 +9,7 @@ showMsg(BuildContext context, String msg, bool isSuccess){
       backgroundColor: Colors.transparent, // No background color
       elevation: 0, // No shadow
       behavior: SnackBarBehavior.floating,
+      duration: const Duration(seconds: 3),
       content: Center(
         child: Text(
           msg,

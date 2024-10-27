@@ -2,15 +2,19 @@ class UserModel {
   String? id;
   String fullName;
   String number;
-  String email;
   String address;
+  String email;
+  String? image;
+
 
   UserModel({
     this.id,
     required this.fullName,
     required this.number,
     required this.email,
-    required this.address,});
+    required this.address,
+    this.image,
+  });
 
   // Method to convert UserModel to a Map
   Map<String, dynamic> toMap() {
@@ -20,6 +24,7 @@ class UserModel {
       'number': number,
       'email': email,
       'address': address,
+      'image': image,
     };
   }
   // Factory constructor to create a UserModel from a Map
@@ -29,6 +34,7 @@ class UserModel {
       fullName: map['fullName'],
       number: map['number'],email: map['email'],
       address: map['address'],
+      image: map['image'],
     );
   }
 }

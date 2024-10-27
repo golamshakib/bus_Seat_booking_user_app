@@ -43,6 +43,7 @@ dependencies:
   firebase_auth:
   cloud_firestore:
   firebase_storage:
+  google_sign_in:
   cached_network_image:
   connectivity_plus:
   flutter_easyloading:
